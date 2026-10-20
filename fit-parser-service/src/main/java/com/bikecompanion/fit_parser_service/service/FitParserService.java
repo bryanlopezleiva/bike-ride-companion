@@ -8,6 +8,7 @@ import com.bikecompanion.fit_parser_service.repository.RideRepository;
 import com.garmin.fit.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class FitParserService {
+
+    @Value("${app.fit-time-zone:UTC}")
+    private String fitTimeZone;
 
     private final RideRepository rideRepository;
     private final RideMapper rideMapper;
@@ -140,7 +144,7 @@ public class FitParserService {
     private LocalDateTime convertGarminTime(DateTime garminTime) {
         return LocalDateTime.ofInstant(
                 garminTime.getDate().toInstant(),
-                ZoneId.systemDefault()
+                ZoneId.of(fitTimeZone)
         );
     }
 

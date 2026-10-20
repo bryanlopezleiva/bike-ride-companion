@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/rides")
 @RequiredArgsConstructor
 @Slf4j
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 public class FitController {
     private final FitParserService fitParserService;
     private final RideService rideService;

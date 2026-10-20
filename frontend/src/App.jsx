@@ -4,6 +4,7 @@ import FileImport from "./components/rides/FileImport";
 import RideCard from "./components/rides/RideCard";
 import RideDetail from "./components/rides/RideDetail";
 import WeatherForecast from "./components/weather/WeatherForecast";
+import { RideHeatmap } from "./components/rides/RideMaps";
 import { getAllRides, getRideById } from "./services/ridesApi";
 
 const DEFAULT_PSI_SETTINGS = {
@@ -25,6 +26,7 @@ export default function App() {
   const [selectedRide, setSelectedRide] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState("");
+  const [activeView, setActiveView] = useState("activities");
 
   const fetchRidesHistory = () => {
     getAllRides()
@@ -99,8 +101,37 @@ export default function App() {
         <FileImport onUploadSuccess={loadRidesHistory} />
       </section>
 
-      {/* Main Grid: Split between Calculator Config & Ride History */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <nav className="flex gap-2 border-b border-gray-100" aria-label="Ride views">
+        <button
+          type="button"
+          onClick={() => setActiveView("activities")}
+          aria-pressed={activeView === "activities"}
+          className={`rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${
+            activeView === "activities"
+              ? "border-b-2 border-blue-600 text-blue-700"
+              : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          Activities
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveView("heatmap")}
+          aria-pressed={activeView === "heatmap"}
+          className={`rounded-t-lg px-4 py-2 text-sm font-medium transition-colors ${
+            activeView === "heatmap"
+              ? "border-b-2 border-blue-600 text-blue-700"
+              : "text-gray-500 hover:text-gray-800"
+          }`}
+        >
+          Heatmap
+        </button>
+      </nav>
+
+      {activeView === "heatmap" ? (
+        <RideHeatmap rides={rides} />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Left Side: Controls */}
         <div className="space-y-6">
           <WeatherForecast />
@@ -158,7 +189,8 @@ export default function App() {
             </>
           )}
         </div>
-      </div>
+        </div>
+      )}
     </div>
   );
 }

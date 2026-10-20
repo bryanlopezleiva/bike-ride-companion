@@ -28,3 +28,11 @@ export async function getRideById(id) {
   if (!response.ok) throw new Error(`Failed to fetch ride ${id}`);
   return response.json();
 }
+
+export async function getGpsPointsPreview(id, sampleRate = 20) {
+  const response = await fetch(
+    `${BASE_URL}/api/rides/${id}/gps/preview?sampleRate=${sampleRate}`,
+  );
+  if (!response.ok) throw new Error(`Failed to fetch GPS points for ride ${id}`);
+  return response.json();
+}

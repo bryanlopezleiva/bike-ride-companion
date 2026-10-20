@@ -4,6 +4,7 @@ import {
   getPSIWarning,
   ROAD_TYPE_LABELS,
 } from "../../utils/psiFormula";
+import { RideRouteMap } from "./RideMaps";
 
 const DEFAULT_PSI_INPUTS = {
   riderWeightLbs: 165,
@@ -115,12 +116,20 @@ export default function RideDetail({
             <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
               {stat.label}
             </p>
-            <p className="mt-1 text-lg font-bold text-gray-900">
-              {stat.value}
-            </p>
+            <p className="mt-1 text-lg font-bold text-gray-900">{stat.value}</p>
           </div>
         ))}
       </div>
+
+      <section className="mb-5 space-y-3">
+        <div>
+          <h3 className="text-sm font-semibold text-gray-900">Ride route</h3>
+          <p className="mt-1 text-xs text-gray-500">
+            Start and finish are marked on the map.
+          </p>
+        </div>
+        <RideRouteMap gpsPoints={ride.gpsPoints} rideName={ride.rideName} />
+      </section>
 
       <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
         <div className="flex items-center justify-between gap-3">
@@ -130,8 +139,7 @@ export default function RideDetail({
             </p>
             <p className="mt-1 text-sm font-medium text-blue-900">
               {ROAD_TYPE_LABELS[roadType]} ·{" "}
-              {psiSettings.riderWeightLbs + psiSettings.bikeWeightLbs} lb
-              system
+              {psiSettings.riderWeightLbs + psiSettings.bikeWeightLbs} lb system
             </p>
           </div>
           <div className="text-right">
@@ -145,9 +153,7 @@ export default function RideDetail({
           {getPSISummary(psi.front, psi.rear, roadType)}
         </p>
         {psiWarning ? (
-          <p className="mt-2 text-xs font-medium text-blue-800">
-            {psiWarning}
-          </p>
+          <p className="mt-2 text-xs font-medium text-blue-800">{psiWarning}</p>
         ) : null}
       </div>
     </article>
